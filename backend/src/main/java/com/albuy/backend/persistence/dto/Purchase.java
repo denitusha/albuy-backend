@@ -14,8 +14,6 @@ import java.util.Set;
 public class Purchase {
 
     private User Buyer;
-    private Address shippingAddress;
-    private Address billingAddress;
     private Order order;
     private Set<OrderItem> orderItems;
 

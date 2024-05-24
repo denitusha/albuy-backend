@@ -1,6 +1,6 @@
 package com.albuy.backend.persistence.repository;
 
-import com.webproject.foodservice.entity.Product;
+import com.albuy.backend.persistence.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

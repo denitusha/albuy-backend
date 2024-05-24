@@ -15,4 +15,6 @@ public class SignUpRequest {
 
     private String role;
 
+    private String companyName;
+
 }

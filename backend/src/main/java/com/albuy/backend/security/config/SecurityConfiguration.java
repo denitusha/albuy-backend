@@ -2,6 +2,7 @@ package com.albuy.backend.security.config;
 
 
 import com.albuy.backend.persistence.entity.Role;
+import com.albuy.backend.security.service.JWTService;
 import com.albuy.backend.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,9 +25,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private final UserService userService;
+
+    private final JWTService jwtService;
+
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return new JwtAuthenticationFilter(jwtService, userService);
+    }
 
 
     @Bean
@@ -45,9 +53,9 @@ public class SecurityConfiguration {
 
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class
+                        jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class
                 );
-                return http.build();
+        return http.build();
     }
 
     @Bean
@@ -67,6 +75,5 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 
 }

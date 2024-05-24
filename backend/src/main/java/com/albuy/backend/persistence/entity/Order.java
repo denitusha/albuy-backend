@@ -31,6 +31,7 @@ public class Order {
     private Date dateCreated;
     @UpdateTimestamp
     private Date lastUpdated;
+    private String shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
@@ -39,13 +40,10 @@ public class Order {
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shipping_address_id", referencedColumnName ="id" )
-    private Address shippingAddress;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "billing_address_id", referencedColumnName ="id" )
-    private Address billingAddress;
+
+
+
 
 
 
