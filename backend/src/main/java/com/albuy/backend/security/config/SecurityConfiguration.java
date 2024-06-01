@@ -42,9 +42,9 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/users/**").hasAnyAuthority(Role.ADMIN.name())
-                        .requestMatchers("/products/seller/**").hasAnyAuthority(Role.SELLER.name())
-                        .requestMatchers("/product/save/**").hasAnyAuthority(Role.SELLER.name())
-                        .requestMatchers("//products/delete/**").hasAnyAuthority(Role.SELLER.name())
+                        .requestMatchers("/api/products/seller/**").hasAnyAuthority(Role.SELLER.name())
+                        .requestMatchers("/api/product/save/**").hasAnyAuthority(Role.SELLER.name())
+                        .requestMatchers("/api/products/delete/**").hasAnyAuthority(Role.SELLER.name())
                         .requestMatchers("/api/checkout/**").hasAnyAuthority(Role.SELLER.name(), Role.BUYER.name())
                         .requestMatchers("/api/review").hasAnyAuthority( Role.BUYER.name())
                         .requestMatchers("/api/seller-stats").hasAnyAuthority(Role.SELLER.name())
