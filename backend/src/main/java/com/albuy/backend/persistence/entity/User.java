@@ -42,20 +42,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
     private Set<Order> orders = new HashSet<>();
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
-    private Set<Product> productsSold = new HashSet<>();
 
-
-    public void addProduct(Product product){
-        if(product != null){
-            if(productsSold == null){
-                productsSold = new HashSet<>();
-            }
-
-            productsSold.add(product);
-            product.setSeller(this);
-        }
-    }
 
 
 
@@ -99,4 +86,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
 }

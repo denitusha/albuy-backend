@@ -1,5 +1,4 @@
-package com.albuy.backend.security.service;
-
+package com.albuy.backend.persistence.service;
 
 import com.albuy.backend.persistence.dto.Purchase;
 import com.albuy.backend.persistence.dto.PurchaseResponse;

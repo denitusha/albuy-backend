@@ -34,6 +34,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
         user.setRole(role);
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
+        User savedUser = userRepository.save(user);
 
         return userRepository.save(user);
 
@@ -64,6 +65,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
         jwtAuthenticationResponse.setFirstName(user.getFirst_name());
         jwtAuthenticationResponse.setLastName(user.getSecond_name());
         jwtAuthenticationResponse.setRole(role);
+        jwtAuthenticationResponse.setUserId(user.getId());
 
         return jwtAuthenticationResponse;
     }

@@ -1,44 +1,53 @@
 package com.albuy.backend.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory category;
-    private String sku;
-    private String name;
+    private String title;
     private String description;
-    private BigDecimal unitPrice;
-    private String imageUrl;
-    private Boolean active;
-    private int unitsInStock;
+    private BigDecimal price;
+    private String image;
+
     @CreationTimestamp
     private Date dateCreated;
 
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private User seller;
+
+    private Long sellerId;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
+    private List<Review> reviews;
 
 
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                '}';
+    }
 
 }

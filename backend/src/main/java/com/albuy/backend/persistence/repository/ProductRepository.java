@@ -5,12 +5,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
-@RepositoryRestResource()
+@Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Page<Product> findByNameContaining(@Param("name") String name, Pageable pageable);
+    List<Product> findByTitleContaining(@Param("name") String name);
 
+
+    List<Product> findAllByCategoryCategoryName(@Param("categoryName") String categoryName);
+
+    List<Product> findAllBySellerId(@Param("sellerId") Long sellerId);
 
 }
