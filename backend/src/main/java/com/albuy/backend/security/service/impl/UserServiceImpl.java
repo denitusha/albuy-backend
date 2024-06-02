@@ -1,8 +1,9 @@
-package com.albuy.backend.security.service;
+package com.albuy.backend.security.service.impl;
 
 
 import com.albuy.backend.persistence.entity.Role;
 import com.albuy.backend.persistence.repository.UserRepository;
+import com.albuy.backend.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +17,7 @@ import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private  final UserRepository userRepository;
 

@@ -25,7 +25,6 @@ public class CheckoutServiceImpl implements CheckoutService {
     private final OrderRepository orderRepository;
 
 
-
     @Override
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
@@ -39,20 +38,13 @@ public class CheckoutServiceImpl implements CheckoutService {
         orderItems.forEach(item -> order.add(item));
 
 
-
-
-
         User buyer = purchase.getBuyer();
         User existingCustomer = userRepository.findByEmail(buyer.getEmail()).get();
 
 
-        if (existingCustomer != null) {
-            order.setBuyer(existingCustomer);
-            orderRepository.save(order);
-        } else {
-            buyer.addOrder(order);
-            userRepository.save(buyer);
-        }
+        order.setBuyer(existingCustomer);
+        orderRepository.save(order);
+
 
         return new PurchaseResponse(orderTrackingNumber);
 
