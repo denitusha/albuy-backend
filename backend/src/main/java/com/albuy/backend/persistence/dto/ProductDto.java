@@ -26,7 +26,7 @@ public class ProductDto {
     private String image;
     private Boolean canReview;
 
-
+    private float rating;
     private Long sellerId;
     private String companyName;
 

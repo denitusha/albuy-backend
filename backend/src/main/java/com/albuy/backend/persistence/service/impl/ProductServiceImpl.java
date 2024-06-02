@@ -1,11 +1,13 @@
 package com.albuy.backend.persistence.service.impl;
 
 import com.albuy.backend.persistence.dto.ProductDto;
+import com.albuy.backend.persistence.dto.ReviewDto;
 import com.albuy.backend.persistence.entity.Product;
 import com.albuy.backend.persistence.entity.ProductCategory;
 import com.albuy.backend.persistence.entity.User;
 import com.albuy.backend.persistence.repository.ProductCategoryRepository;
 import com.albuy.backend.persistence.repository.ProductRepository;
+import com.albuy.backend.persistence.repository.ReviewRepository;
 import com.albuy.backend.persistence.repository.UserRepository;
 import com.albuy.backend.persistence.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final UserRepository userRepository;
+
+    private final ReviewRepository reviewRepository;
 
 
     @Override
@@ -77,7 +81,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getProducts() {
 
-        return productRepository.findAll().stream().map(ProductDto::fromProduct).toList();
+        List<ProductDto> products = productRepository.findAll().stream().map(ProductDto::fromProduct).toList();
+        products.forEach(productDto -> {
+            productDto.setRating(getRating(productDto.getReviews()));
+        });
+        return products;
     }
 
     @Override
@@ -90,7 +98,7 @@ public class ProductServiceImpl implements ProductService {
             ProductDto productDto = ProductDto.fromProduct(product);
             productDto.setCanReview(hasUserBoughtProduct(UserId, ProductId));
             productDto.setCompanyName(seller.getCompany_name());
-
+            productDto.setRating(getRating(productDto.getReviews()));
             log.info("Returning product detail: {}", productDto);
             return productDto;
         } else {
@@ -109,5 +117,15 @@ public class ProductServiceImpl implements ProductService {
                 "WHERE o.buyer_id = ? " +
                 "AND oi.product_id = ?";
         return jdbcTemplate.queryForObject(sql, Boolean.class, userId, productId);
+    }
+
+
+
+    public float getRating(List<ReviewDto> reviews){
+        float rating = 0;
+        for(ReviewDto review : reviews){
+            rating += review.getRating();
+        }
+        return rating/reviews.size();
     }
 }
