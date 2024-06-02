@@ -5,6 +5,7 @@ import com.albuy.backend.persistence.entity.User;
 import com.albuy.backend.persistence.repository.UserRepository;
 import com.albuy.backend.security.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthenticationServiceImpl implements  AuthenticationService{
 
     private final UserRepository userRepository;
@@ -41,6 +43,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
     }
 
     public JwtAuthenticationResponse signin(SignInRequest signInRequest){
+        log.info("Sign in request: {}", signInRequest);
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),
                 signInRequest.getPassword()));
