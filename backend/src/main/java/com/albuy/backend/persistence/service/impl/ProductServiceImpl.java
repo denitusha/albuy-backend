@@ -33,7 +33,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> findAllBySellerId(Long sellerId) {
-        return productRepository.findAllBySellerId(sellerId).stream().map(ProductDto::fromProduct).toList();
+
+        List<ProductDto> products =  productRepository.findAllBySellerId(sellerId).stream().map(ProductDto::fromProduct).toList();
+        products.forEach(productDto -> {
+            productDto.setRating(getRating(productDto.getReviews()));
+        });
+        return products;
     }
 
     @Override
@@ -42,7 +47,11 @@ public class ProductServiceImpl implements ProductService {
         if(productCategory == null){
             return List.of();
         }
-        return productRepository.findAllByCategoryCategoryName(categoryName).stream().map(ProductDto::fromProduct).toList();
+        List<ProductDto> products = productRepository.findAllByCategoryCategoryName(categoryName).stream().map(ProductDto::fromProduct).toList();
+        products.forEach(productDto -> {
+            productDto.setRating(getRating(productDto.getReviews()));
+        });
+        return products;
     }
 
     @Override
@@ -75,7 +84,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getProductsByNameContaining(String name) {
-        return productRepository.findByTitleContaining(name).stream().map(ProductDto::fromProduct).toList();
+
+        List<ProductDto> products = productRepository.findByTitleContaining(name).stream().map(ProductDto::fromProduct).toList();
+        products.forEach(productDto -> {
+            productDto.setRating(getRating(productDto.getReviews()));
+        });
+        return products;
     }
 
     @Override
