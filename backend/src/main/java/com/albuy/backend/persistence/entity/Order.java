@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Slf4j
 public class Order {
 
     @Id
@@ -53,8 +55,10 @@ public class Order {
                 orderItems = new HashSet<>();
             }
 
+            log.info("OrderItem: " + item.toString());
             orderItems.add(item);
             item.setOrder(this);
+            log.info("OrderItem: " + item.toString());
         }
     }
 }
