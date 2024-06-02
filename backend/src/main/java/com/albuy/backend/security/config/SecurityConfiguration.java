@@ -24,6 +24,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -42,39 +44,41 @@ public class SecurityConfiguration {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors(withDefaults())  // Enable CORS with the custom configuration
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/users/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/products/seller/**").hasAnyAuthority(Role.SELLER.name())
                         .requestMatchers("/api/product/save/**").hasAnyAuthority(Role.SELLER.name())
                         .requestMatchers("/api/products/delete/**").hasAnyAuthority(Role.SELLER.name())
                         .requestMatchers("/api/checkout/**").hasAnyAuthority(Role.SELLER.name(), Role.BUYER.name())
-                        .requestMatchers("/api/review").hasAnyAuthority( Role.BUYER.name())
+                        .requestMatchers("/api/review").hasAnyAuthority(Role.BUYER.name())
                         .requestMatchers("/api/seller-stats").hasAnyAuthority(Role.SELLER.name())
                         .requestMatchers("api/**")
                         .permitAll()
                         .anyRequest().authenticated())
-
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()).addFilterBefore(
-                        jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class
-                );
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
 
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*")); // Adjust as needed
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Replace with your actual front-end URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*")); // Adjust as needed
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

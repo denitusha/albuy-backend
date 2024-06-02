@@ -15,16 +15,18 @@ public class MyAppConfig implements WebMvcConfigurer {
     private String basePath;
 
 
-    @Override
-    public void addCorsMappings(CorsRegistry cors) {
 
-        cors.addMapping(basePath + "/**").allowedOrigins(allowedOrigins);
-        cors.addMapping(basePath + "/**")
-                .allowedOrigins(allowedOrigins)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
+
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/**")
+                    .allowedOrigins(allowedOrigins)  // Replace with your actual front-end URL
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .allowedHeaders("Authorization", "Cache-Control", "Content-Type")
+                    .allowCredentials(true);
+        }
+
+
 
 
 }
